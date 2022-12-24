@@ -1,0 +1,58 @@
+<!-- index.html -->
+<!doctype html>
+<html>
+<head>
+  <title>Trending Hashtags</title>
+  <style>
+    /* Add some basic styling here */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Container for the trending hashtags -->
+  <div id="trends-container"></div>
+
+  <!-- Include jQuery and the script to fetch and display the trends -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script> // trends.js
+
+// Replace with your own API key and secret
+const apiKey = 'j9N4LRHLefgSFsSY362Ykfbau';
+const apiSecret = 'qCxAgX7Ad1u3weejPGRul6G2y5GQdoCS7QJBAhcXaxc6MNoEPf';
+
+// Specify the WOEID for the location you want to get trends for
+const woeid = 23424977; // United States
+
+// Use jQuery's $.ajax() function to send a request to the Twitter API's "trends/place" endpoint
+$.ajax({
+  url: 'https://api.twitter.com/1.1/trends/place.json',
+  method: 'GET',
+  data: {
+    id: woeid
+  },
+  headers: {
+    Authorization: `Bearer ${apiKey}:${apiSecret}`
+  },
+  success: function(response) {
+    // In the success callback function, loop through the array of trends and extract the hashtag text
+    const trends = response[0].trends.map(trend => trend.name);
+
+    // Create an HTML element for each trend and append it to the container element
+    const $trendsContainer = $('#trends-container');
+    trends.forEach(trend => {
+      const $trend = $(`<li>${trend}</li>`);
+      $trendsContainer.append($trend);
+    });
+  }
+});
+</script>
+</body>
+</html>
